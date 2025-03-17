@@ -1,6 +1,6 @@
 ﻿using Assets.Sources.BaseLogic.Item;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag.Model
 {
     public struct CellData
     {

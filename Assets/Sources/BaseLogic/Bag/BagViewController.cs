@@ -1,15 +1,17 @@
-﻿using Assets.Sources.BaseLogic.Item;
+﻿using Assets.Sources.BaseLogic.Bag.Model;
+using Assets.Sources.BaseLogic.Bag.View;
+using Assets.Sources.BaseLogic.Item;
 using System;
 using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag
 {
     public class BagViewController : IDisposable
     {
-        private readonly Inventory _model;
+        private readonly Model.Bag _model;
         private readonly BagView _view;
 
-        public BagViewController(Inventory inventory, BagView bagView)
+        public BagViewController(Model.Bag inventory, BagView bagView)
         {
             _model = inventory;
             _view = bagView;

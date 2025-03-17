@@ -1,11 +1,14 @@
 ﻿using Assets.Sources.BaseLogic;
-using Assets.Sources.BaseLogic.Inventory;
+using Assets.Sources.BaseLogic.Bag;
+using Assets.Sources.BaseLogic.Bag.Model;
+using Assets.Sources.BaseLogic.Bag.View;
 using Assets.Sources.BaseLogic.Item;
 using Assets.Sources.InputService;
 using Assets.Sources.LoadingTree;
 using Assets.Sources.LoadingTree.Piplines;
 using Assets.Sources.LoadingTree.ServiceLocator;
 using Assets.Sources.LoadingTree.SharedDataBundle;
+using Assets.Sources.Services.CoroutineRunner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +18,8 @@ namespace Assets.Sources.CompositionRoot
 {
     public class CompositionRoot : MonoBehaviour
     {
-        private readonly ItemType[] _items = new ItemType[]
-        {
-            ItemType.Gun,
-            ItemType.Pistol,
-            ItemType.Tool,
-        };
-
         [SerializeField] private Camera _camera;
+        [SerializeField] private CoroutineRunner _coroutineRunner;
 
         private IInputService _inputService;
         private SharedBundle _sharedBundle;
@@ -35,6 +32,7 @@ namespace Assets.Sources.CompositionRoot
             _sharedBundle = new();
 
             _sharedBundle.Add(SharedBundleKeys.Camera, _camera);
+            _sharedBundle.Add(SharedBundleKeys.CoroutineRunner, _coroutineRunner);
 
             GameLauncher gameLauncher = new(gameLoadingPipline.GetOperations());
 
@@ -45,6 +43,7 @@ namespace Assets.Sources.CompositionRoot
            
 
             Positioner positioner = new(_sharedBundle.Get<Camera>(SharedBundleKeys.Camera), ServiceLocator.Get<IInputService>(), _sharedBundle.Get<BagView>(SharedBundleKeys.BagView));
+            BagPostRequestCreator bagPostRequestCreator = new(_sharedBundle.Get<Bag>(SharedBundleKeys.BagModel), _sharedBundle.Get<ICoroutineRunner>(SharedBundleKeys.CoroutineRunner));
 
             _inputService = ServiceLocator.Get<IInputService>();
 
@@ -62,9 +61,9 @@ namespace Assets.Sources.CompositionRoot
 
             ItemBuilder itemBuilder = _sharedBundle.Get<ItemBuilder>(SharedBundleKeys.ItemBuilder);
 
-            foreach (ItemType type in _items)
+            foreach (Guid identifier in itemBuilder.AllIdentifiers)
             {
-                ItemObject item = itemBuilder.Create(type);
+                ItemObject item = itemBuilder.Create(identifier);
 
                 _createdItems.Add(item);
             }
@@ -72,16 +71,16 @@ namespace Assets.Sources.CompositionRoot
         
         private void CreateBag()
         {
-            BagBuilder bagBuilder = _sharedBundle.Get<BagBuilder>(SharedBundleKeys.InventoryBuilder);
-            List<ItemType> itemTypes = _sharedBundle.Get<List<ItemType>>(SharedBundleKeys.StartInventoryItems);
+            BagBuilder bagBuilder = _sharedBundle.Get<BagBuilder>(SharedBundleKeys.BagBuidler);
+            Guid[] itemIdentifiers = _sharedBundle.Get<Guid[]>(SharedBundleKeys.StartInventoryItems);
             List<ItemObject> bagItems = new();
 
-            foreach(ItemType type in itemTypes)
+            foreach(Guid identifier in itemIdentifiers)
             {
-                if (_createdItems.Any(value => value.Type == type))
-                    bagItems.Add(_createdItems.First(value => value.Type == type));
+                if (_createdItems.Any(value => value.Identifire == identifier))
+                    bagItems.Add(_createdItems.First(value => value.Identifire == identifier));
                 else
-                    bagItems.Add(_sharedBundle.Get<ItemBuilder>(SharedBundleKeys.ItemBuilder).Create(type));
+                    bagItems.Add(_sharedBundle.Get<ItemBuilder>(SharedBundleKeys.ItemBuilder).Create(identifier));
             }
 
             bagBuilder.Create(bagItems);

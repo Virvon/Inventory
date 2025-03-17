@@ -8,16 +8,20 @@ namespace Assets.Sources.BaseLogic.Item
 {
     public class ItemBuilder
     {
-        private readonly Dictionary<ItemType, ItemConfiguration> _itemConfigurations;
+        private const string ConfigurationsPath = "Configurations";
+
+        private readonly Dictionary<Guid, ItemConfiguration> _itemConfigurations;
 
         public ItemBuilder()
         {
-            _itemConfigurations = Resources.LoadAll<ItemConfiguration>("").ToDictionary(value => value.Type, value => value);
+            _itemConfigurations = Resources.LoadAll<ItemConfiguration>(ConfigurationsPath).ToDictionary(value => value.Identifier, value => value);
         }
 
-        public ItemObject Create(ItemType type)
+        public IReadOnlyList<Guid> AllIdentifiers => _itemConfigurations.Keys.ToList();
+
+        public ItemObject Create(Guid identifier)
         {
-            if (_itemConfigurations.TryGetValue(type, out ItemConfiguration configuration) == false)
+            if (_itemConfigurations.TryGetValue(identifier, out ItemConfiguration configuration) == false)
                 throw new Exception();
 
             ItemObject item = Object.Instantiate(configuration.Prefab, configuration.StartPosition, Quaternion.identity);

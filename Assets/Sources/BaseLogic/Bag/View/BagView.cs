@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag.View
 {
     public class BagView : MonoBehaviour
     {
@@ -17,9 +17,9 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         public void Initialize(IReadOnlyList<ItemObject> items)
         {
-            foreach(CellView cell in _cells)
+            foreach (CellView cell in _cells)
             {
-                foreach(ItemObject item in items)
+                foreach (ItemObject item in items)
                 {
                     if (cell.ItemType != item.Type)
                         continue;
@@ -34,9 +34,9 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         public void Change(IReadOnlyList<ItemObject> items)
         {
-            foreach(CellView cell in _cells)
+            foreach (CellView cell in _cells)
             {
-                foreach(ItemObject item in items)
+                foreach (ItemObject item in items)
                 {
                     if (cell.ItemType != item.Type)
                         continue;
@@ -48,7 +48,7 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         public void Remove(ItemObject item)
         {
-            foreach(CellView cell in _cells)
+            foreach (CellView cell in _cells)
             {
                 if (cell.Item == item)
                     cell.Remove();

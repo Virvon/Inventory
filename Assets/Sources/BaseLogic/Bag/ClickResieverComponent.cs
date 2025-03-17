@@ -2,7 +2,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag
 {
     public class ClickResieverComponent : MonoBehaviour
     {
@@ -30,7 +30,7 @@ namespace Assets.Sources.BaseLogic.Inventory
         {
             Ray ray = _camera.ScreenPointToRay(position);
 
-            if(Physics.Raycast(ray, out RaycastHit hitInfo, RaycastDistance)
+            if (Physics.Raycast(ray, out RaycastHit hitInfo, RaycastDistance)
                 && hitInfo.transform.TryGetComponent(out ClickResieverComponent clickResiever)
                 && clickResiever == this)
                 Clicked?.Invoke();

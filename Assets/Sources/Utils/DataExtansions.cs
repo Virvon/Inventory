@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Sources.Services.SaveLoadData
+namespace Assets.Sources.Utils
 {
     public static class DataExtansions
     {

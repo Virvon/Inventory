@@ -1,4 +1,5 @@
-﻿using Assets.Sources.BaseLogic.Inventory;
+﻿using Assets.Sources.BaseLogic.Bag;
+using Assets.Sources.BaseLogic.Bag.View;
 using Assets.Sources.BaseLogic.Item;
 using Assets.Sources.InputService;
 using System;
@@ -60,7 +61,7 @@ namespace Assets.Sources.BaseLogic
 
             _movementItem.Get<PhysicalMovementComponent>().SetGravity(true);
 
-            if (Physics.Raycast(GetRay(position), out RaycastHit hitInfo, RaycastDistance) && hitInfo.transform.TryGetComponent(out Bag bag))
+            if (Physics.Raycast(GetRay(position), out RaycastHit hitInfo, RaycastDistance) && hitInfo.transform.TryGetComponent(out BagObject bag))
                 bag.Get<BagView>().TryAdd(_movementItem);
 
             _movementItem = null;

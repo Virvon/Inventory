@@ -1,22 +1,18 @@
-﻿using Assets.Sources.BaseLogic.Item;
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace Assets.Sources.Services.SaveLoadData
 {
     [Serializable]
     public class BagData : IMemento
     {
-        public List<ItemType> Items;
+        public string[] ItemIdentifiers;
 
-        public BagData(List<ItemType> items)
+        public BagData(string[] temIdentifiers)
         {
-            Items = items;
+            ItemIdentifiers = temIdentifiers;
         }
 
-        public BagData GetBagData()
-        {
-            return this;
-        }
+        public BagData GetBagData() =>
+            this;
     }
 }

@@ -1,18 +1,19 @@
-﻿using Assets.Sources.BaseLogic.Item;
+﻿using Assets.Sources.BaseLogic.Bag.View;
+using Assets.Sources.BaseLogic.Item;
 using Assets.Sources.InputService;
 using System;
 using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag
 {
     public class UiBagPresenter : IDisposable
     {
-        private readonly Inventory _model;
+        private readonly Model.Bag _model;
         private readonly UiBagView _view;
         private readonly IInputService _inputService;
         private readonly ClickResieverComponent _clickResierver;
 
-        public UiBagPresenter(Inventory model, UiBagView view, IInputService inputService, ClickResieverComponent clickResiever)
+        public UiBagPresenter(Model.Bag model, UiBagView view, IInputService inputService, ClickResieverComponent clickResiever)
         {
             _model = model;
             _view = view;

@@ -3,9 +3,8 @@ using Assets.Sources.InputService;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag.View
 {
     public class UiBagView : MonoBehaviour
     {
@@ -28,11 +27,11 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         public void Change(IEnumerable<ItemObject> items)
         {
-            foreach(UiCellView cell in _cells)
+            foreach (UiCellView cell in _cells)
             {
-                foreach(ItemObject item in items)
+                foreach (ItemObject item in items)
                 {
-                    if(cell.ItemType == item.Type)
+                    if (cell.ItemType == item.Type)
                         cell.TryChange(item);
                 }
             }
@@ -40,7 +39,7 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         public void Remove(ItemObject item)
         {
-            foreach(UiCellView cell in _cells)
+            foreach (UiCellView cell in _cells)
             {
                 if (cell.Item == item)
                     cell.Remove();
@@ -49,7 +48,7 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         private void OnClickEnded(Vector2 position)
         {
-            foreach(UiCellView cell in _cells)
+            foreach (UiCellView cell in _cells)
             {
                 if (cell.CheackHandleIntersection(position) == false)
                     continue;

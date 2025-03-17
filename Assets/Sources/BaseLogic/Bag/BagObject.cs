@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Assets.Sources.BaseLogic.Bag.View;
+using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag
 {
-    public class Bag : EntityObject
+    public class BagObject : EntityObject
     {
         [SerializeField] private ClickResieverComponent _clickResieverComponent;
         [SerializeField] private BagView _bagView;

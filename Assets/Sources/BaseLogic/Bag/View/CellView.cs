@@ -1,15 +1,13 @@
 ﻿using Assets.Sources.BaseLogic.Item;
-using System;
-using TMPro;
 using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag.View
 {
-    public class UiCellView : MonoBehaviour
+    public class CellView : MonoBehaviour
     {
         [SerializeField] private ItemType _itemType;
 
-        private TMP_Text _text;
+        private Vector3 _position;
 
         public ItemObject Item { get; private set; }
 
@@ -17,7 +15,14 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         private void Awake()
         {
-            _text = GetComponent<TMP_Text>();
+            _position = GetComponent<Transform>().position;
+        }
+
+        public void Initialize(ItemObject item)
+        {
+            Item = item;
+
+            Item.Get<ParentChangerComponent>().Set(transform, true);
         }
 
         public void TryChange(ItemObject item)
@@ -27,18 +32,13 @@ namespace Assets.Sources.BaseLogic.Inventory
 
             Item = item;
 
-            _text.text = item.Name;
+            Item.Get<ParentChangerComponent>().Set(transform);
         }
 
         public void Remove()
         {
+            Item.Get<ParentChangerComponent>().Reset();
             Item = null;
-            _text.text = string.Empty;
-        }
-
-        public bool CheackHandleIntersection(Vector2 handlePosition)
-        {
-            return RectTransformUtility.RectangleContainsScreenPoint(_text.rectTransform, handlePosition);
         }
     }
 }

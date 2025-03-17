@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.Events;
 
-namespace Assets.Sources.BaseLogic.Inventory
+namespace Assets.Sources.BaseLogic.Bag.Model
 {
-    public class Inventory
+    public class Bag
     {
         private readonly IReadOnlyList<CellData> _cellsData;
         private readonly List<ItemObject> _items;
 
-        public Inventory(IReadOnlyList<CellData> cellsData, List<ItemObject> items)
+        public Bag(IReadOnlyList<CellData> cellsData, List<ItemObject> items)
         {
             _cellsData = cellsData;
             _items = items;
@@ -32,7 +32,7 @@ namespace Assets.Sources.BaseLogic.Inventory
 
             int itemsCount = _items.Where(item => item.Type == itemType).Count();
 
-            if(TryGetCellsCount(itemType, out int count) && itemsCount < count)
+            if (TryGetCellsCount(itemType, out int count) && itemsCount < count)
             {
                 _items.Add(item);
                 ItemAdded?.Invoke(item);
@@ -50,7 +50,7 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         public IMemento Save()
         {
-            return new BagData(_items.Select(value => value.Type).ToList());
+            return new BagData(_items.Select(value => value.Identifire.ToString()).ToArray());
         }
 
         private bool TryGetCellsCount(ItemType itemType, out int count)

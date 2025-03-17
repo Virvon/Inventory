@@ -1,5 +1,4 @@
-﻿using Assets.Sources.BaseLogic.Inventory;
-using Assets.Sources.BaseLogic.Item;
+﻿using Assets.Sources.BaseLogic.Item;
 using Assets.Sources.LoadingTree.SharedDataBundle;
 
 namespace Assets.Sources.LoadingTree.Operations
@@ -8,7 +7,7 @@ namespace Assets.Sources.LoadingTree.Operations
     {
         public void Run(SharedBundle bundle)
         {
-            bundle.Add(SharedBundleKeys.InventoryBuilder, new BagBuilder(bundle));
+            bundle.Add(SharedBundleKeys.BagBuidler, new BaseLogic.Bag.BagBuilder(bundle));
             bundle.Add(SharedBundleKeys.ItemBuilder, new ItemBuilder());
         }
     }

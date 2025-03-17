@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Sources.BaseLogic.Item
 {
@@ -8,6 +9,7 @@ namespace Assets.Sources.BaseLogic.Item
 
         public ItemType Type => _configuration.Type;
         public string Name => _configuration.Name;
+        public Guid Identifire => _configuration.Identifier;
 
         public void Initialize(ItemConfiguration configuration)
         {
