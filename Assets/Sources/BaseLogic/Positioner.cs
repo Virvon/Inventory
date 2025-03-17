@@ -1,5 +1,4 @@
-﻿using Assets.Sources.BaseLogic.Bag;
-using Assets.Sources.BaseLogic.Bag.View;
+﻿using Assets.Sources.BaseLogic.Bag.View;
 using Assets.Sources.BaseLogic.Item;
 using Assets.Sources.InputService;
 using System;
@@ -49,7 +48,7 @@ namespace Assets.Sources.BaseLogic
             if (_movementItem == null)
                 return;
 
-            Vector3 worldPosition = _camera.ScreenToWorldPoint(new Vector3(position.x, position.y, 10));
+            Vector3 worldPosition = _camera.ScreenToWorldPoint(new Vector3(position.x, position.y, 3));
 
             _movementItem.Get<PhysicalMovementComponent>().Move(worldPosition);
         }
@@ -61,8 +60,17 @@ namespace Assets.Sources.BaseLogic
 
             _movementItem.Get<PhysicalMovementComponent>().SetGravity(true);
 
-            if (Physics.Raycast(GetRay(position), out RaycastHit hitInfo, RaycastDistance) && hitInfo.transform.TryGetComponent(out BagObject bag))
-                bag.Get<BagView>().TryAdd(_movementItem);
+            RaycastHit[] hits = Physics.RaycastAll(GetRay(position), RaycastDistance);
+
+            foreach(RaycastHit hit in hits)
+            {
+                if(hit.transform.TryGetComponent(out Bag.BagObject bag))
+                {
+                    bag.Get<BagView>().TryAdd(_movementItem);
+
+                    break;
+                }
+            }                
 
             _movementItem = null;
         }

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefdae89271b5ec41b454e0d610248b5, type: 3}
   m_Name: GunConfiguration
   m_EditorClassIdentifier: 
+  _identifier: eaf1ee16-a92f-4f85-9fd5-d9a7490ddc04
   Weight: 2
   Name: Gun
-  Identifier: 
   Type: 0
   Prefab: {fileID: -2760759342776581563, guid: a40401e79d117f448999efd6964b95eb, type: 3}
-  StartPosition: {x: 1, y: 1, z: 0}
+  StartPosition: {x: 1, y: 0, z: 0}
