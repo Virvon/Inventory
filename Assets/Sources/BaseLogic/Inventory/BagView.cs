@@ -15,19 +15,33 @@ namespace Assets.Sources.BaseLogic.Inventory
         private void Awake() =>
             _cells = GetComponentsInChildren<CellView>();
 
+        public void Initialize(IReadOnlyList<ItemObject> items)
+        {
+            foreach(CellView cell in _cells)
+            {
+                foreach(ItemObject item in items)
+                {
+                    if (cell.ItemType != item.Type)
+                        continue;
+
+                    cell.Initialize(item);
+                }
+            }
+        }
+
         public void TryAdd(ItemObject item) =>
             ItemAddTried?.Invoke(item);
 
         public void Change(IReadOnlyList<ItemObject> items)
         {
-            for(int i = 0; i < _cells.Length; i++)
+            foreach(CellView cell in _cells)
             {
-                for(int j = 0; j < items.Count; j++)
+                foreach(ItemObject item in items)
                 {
-                    if (_cells[i].ItemType != items[j].Type)
+                    if (cell.ItemType != item.Type)
                         continue;
 
-                    _cells[i].TryChange(items[j]);
+                    cell.TryChange(item);
                 }
             }
         }

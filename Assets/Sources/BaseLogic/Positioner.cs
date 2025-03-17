@@ -34,8 +34,13 @@ namespace Assets.Sources.BaseLogic
 
         private void OnClicked(Vector2 position)
         {
-            if (Physics.Raycast(GetRay(position), out RaycastHit hitInfo, RaycastDistance))
-                hitInfo.transform.TryGetComponent(out _movementItem);
+            if (Physics.Raycast(GetRay(position), out RaycastHit hitInfo, RaycastDistance)
+                && hitInfo.transform.TryGetComponent(out ItemObject itemObject)
+                && itemObject.Get<PhysicalMovementComponent>().CanMoved)
+            {
+                _movementItem = itemObject;
+                _movementItem.Get<PhysicalMovementComponent>().SetGravity(false);
+            }
         }
 
         private void OnDragged(Vector2 position)
@@ -52,6 +57,8 @@ namespace Assets.Sources.BaseLogic
         {
             if (_movementItem == null)
                 return;
+
+            _movementItem.Get<PhysicalMovementComponent>().SetGravity(true);
 
             if (Physics.Raycast(GetRay(position), out RaycastHit hitInfo, RaycastDistance) && hitInfo.transform.TryGetComponent(out Bag bag))
                 bag.Get<BagView>().TryAdd(_movementItem);

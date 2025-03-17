@@ -18,6 +18,13 @@ namespace Assets.Sources.BaseLogic.Inventory
             _position = GetComponent<Transform>().position;
         }
 
+        public void Initialize(ItemObject item)
+        {
+            Item = item;
+
+            Item.Get<ParentChangerComponent>().Set(transform, true);
+        }
+
         public void TryChange(ItemObject item)
         {
             if (Item == item)
@@ -25,15 +32,12 @@ namespace Assets.Sources.BaseLogic.Inventory
 
             Item = item;
 
-            Debug.LogWarning("Need changing");
-            Item.SetPositionAndParent(_position, transform);
-            Item.GetComponent<Rigidbody>().isKinematic = true;
+            Item.Get<ParentChangerComponent>().Set(transform);
         }
 
         public void Remove() 
         {
-            Item.SetPositionAndParent(Item.transform.position);
-            Item.GetComponent<Rigidbody>().isKinematic = false;
+            Item.Get<ParentChangerComponent>().Reset();
             Item = null;
         }
     }

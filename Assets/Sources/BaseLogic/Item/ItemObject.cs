@@ -13,11 +13,5 @@ namespace Assets.Sources.BaseLogic.Item
         {
             _configuration = configuration;
         }
-
-        public void SetPositionAndParent(Vector3 position, Transform parent = null)
-        {
-            transform.position = position;
-            transform.parent = parent;
-        }
     }
 }

@@ -23,7 +23,11 @@ namespace Assets.Sources.BaseLogic.Item
             ItemObject item = Object.Instantiate(configuration.Prefab, configuration.StartPosition, Quaternion.identity);
             item.Initialize(configuration);
 
-            item.Add(new PhysicalMovementComponent(item.GetComponent<Rigidbody>()));
+            Rigidbody rigidbody = item.GetComponent<Rigidbody>();
+            ParentChangerComponent parentChanger = new(rigidbody, item, item.GetComponent<Collider>());
+
+            item.Add(parentChanger);
+            item.Add(new PhysicalMovementComponent(rigidbody, parentChanger));
 
             return item;
         }

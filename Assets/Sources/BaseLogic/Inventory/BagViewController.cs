@@ -14,12 +14,9 @@ namespace Assets.Sources.BaseLogic.Inventory
             _model = inventory;
             _view = bagView;
 
-            _view.Change(_model.Items);
+            _view.Initialize(_model.Items);
 
             _view.ItemAddTried += OnItemAddTried;
-
-            Debug.Log(_model != null);
-            Debug.Log(_model.ItemRemoved != null);
 
             _model.ItemRemoved.AddListener(OnItemRemoved);
             _model.ItemAdded.AddListener(OnItemAdded);
