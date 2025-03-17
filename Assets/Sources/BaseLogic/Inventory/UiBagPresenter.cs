@@ -19,13 +19,14 @@ namespace Assets.Sources.BaseLogic.Inventory
             _inputService = inputService;
             _clickResierver = clickResiever;
 
+            _view.Change(_model.Items);
             _view.Hide();
 
             _clickResierver.Clicked += OnBagClicked;
             _inputService.ClickEnded += OnClickEnded;
-            _model.ItemAdded += OnItemAdded;
+            _model.ItemAdded.AddListener(OnItemAdded);
             _view.ItemRemoved += OnViewTryItemRemoved;
-            _model.ItemRemoved += OnItemRemoved;
+            _model.ItemRemoved.AddListener(OnItemRemoved);
         }
 
         public void Dispose()
@@ -38,8 +39,6 @@ namespace Assets.Sources.BaseLogic.Inventory
             _view.Remove(item);
         }
 
-        
-
         private void OnBagClicked()
         {
             _view.Show();
@@ -50,7 +49,7 @@ namespace Assets.Sources.BaseLogic.Inventory
             _view.Hide();
         }
 
-        private void OnItemAdded()
+        private void OnItemAdded(ItemObject item)
         {
             _view.Change(_model.Items);
         }

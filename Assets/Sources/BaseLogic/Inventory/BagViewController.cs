@@ -1,5 +1,6 @@
 ﻿using Assets.Sources.BaseLogic.Item;
 using System;
+using UnityEngine;
 
 namespace Assets.Sources.BaseLogic.Inventory
 {
@@ -13,16 +14,22 @@ namespace Assets.Sources.BaseLogic.Inventory
             _model = inventory;
             _view = bagView;
 
+            _view.Change(_model.Items);
+
             _view.ItemAddTried += OnItemAddTried;
-            _model.ItemRemoved += OnItemRemoved;
-            _model.ItemAdded += OnItemAdded;
+
+            Debug.Log(_model != null);
+            Debug.Log(_model.ItemRemoved != null);
+
+            _model.ItemRemoved.AddListener(OnItemRemoved);
+            _model.ItemAdded.AddListener(OnItemAdded);
         }
 
         public void Dispose()
         {
             _view.ItemAddTried -= OnItemAddTried;
-            _model.ItemRemoved -= OnItemRemoved;
-            _model.ItemAdded -= OnItemAdded;
+            _model.ItemRemoved.RemoveListener(OnItemRemoved);
+            _model.ItemAdded.RemoveListener(OnItemAdded);
         }
 
         private void OnItemAddTried(ItemObject item) =>
@@ -31,7 +38,7 @@ namespace Assets.Sources.BaseLogic.Inventory
         private void OnItemRemoved(ItemObject item) =>
             _view.Remove(item);
 
-        private void OnItemAdded() =>
+        private void OnItemAdded(ItemObject item) =>
             _view.Change(_model.Items);
     }
 }

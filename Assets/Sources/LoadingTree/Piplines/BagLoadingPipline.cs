@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace Assets.Sources.LoadingTree.Piplines
 {
-    public class GameLoadingPipline
+    public class BagLoadingPipline
     {
         public IReadOnlyList<IOperation> GetOperations()
         {
             return new List<IOperation>
             {
-                new LoadInputServiceOperation(),
+                new LoadServicesOperation(),
+                new LoadDataOperation(),
                 new LoadBuildersOperation(),
             };
         }

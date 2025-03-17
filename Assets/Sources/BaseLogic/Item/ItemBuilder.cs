@@ -15,7 +15,7 @@ namespace Assets.Sources.BaseLogic.Item
             _itemConfigurations = Resources.LoadAll<ItemConfiguration>("").ToDictionary(value => value.Type, value => value);
         }
 
-        public void Create(ItemType type)
+        public ItemObject Create(ItemType type)
         {
             if (_itemConfigurations.TryGetValue(type, out ItemConfiguration configuration) == false)
                 throw new Exception();
@@ -24,6 +24,8 @@ namespace Assets.Sources.BaseLogic.Item
             item.Initialize(configuration);
 
             item.Add(new PhysicalMovementComponent(item.GetComponent<Rigidbody>()));
+
+            return item;
         }
     }
 }

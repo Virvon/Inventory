@@ -1,7 +1,9 @@
 ﻿using Assets.Sources.BaseLogic.Item;
+using Assets.Sources.Services.SaveLoadData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Events;
 
 namespace Assets.Sources.BaseLogic.Inventory
 {
@@ -10,14 +12,17 @@ namespace Assets.Sources.BaseLogic.Inventory
         private readonly IReadOnlyList<CellData> _cellsData;
         private readonly List<ItemObject> _items;
 
-        public Inventory(List<CellData> cellsData)
+        public Inventory(IReadOnlyList<CellData> cellsData, List<ItemObject> items)
         {
             _cellsData = cellsData;
-            _items = new();
+            _items = items;
+
+            ItemAdded = new();
+            ItemRemoved = new();
         }
 
-        public event Action ItemAdded;
-        public event Action<ItemObject> ItemRemoved;
+        public UnityEvent<ItemObject> ItemAdded;
+        public UnityEvent<ItemObject> ItemRemoved;
 
         public IReadOnlyList<ItemObject> Items => _items;
 
@@ -30,7 +35,7 @@ namespace Assets.Sources.BaseLogic.Inventory
             if(TryGetCellsCount(itemType, out int count) && itemsCount < count)
             {
                 _items.Add(item);
-                ItemAdded?.Invoke();
+                ItemAdded?.Invoke(item);
             }
         }
 
@@ -41,6 +46,11 @@ namespace Assets.Sources.BaseLogic.Inventory
 
             _items.Remove(item);
             ItemRemoved?.Invoke(item);
+        }
+
+        public IMemento Save()
+        {
+            return new BagData(_items.Select(value => value.Type).ToList());
         }
 
         private bool TryGetCellsCount(ItemType itemType, out int count)

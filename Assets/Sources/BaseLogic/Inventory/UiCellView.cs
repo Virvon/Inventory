@@ -15,19 +15,18 @@ namespace Assets.Sources.BaseLogic.Inventory
 
         public ItemType ItemType => _itemType;
 
-        private void Start()
+        private void Awake()
         {
             _text = GetComponent<TMP_Text>();
         }
 
         public void TryChange(ItemObject item)
         {
-            Debug.Log("add " + item.Name);
-
             if (Item == item)
                 return;
 
             Item = item;
+
             _text.text = item.Name;
         }
 

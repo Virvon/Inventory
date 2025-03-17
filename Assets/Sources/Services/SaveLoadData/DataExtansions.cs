@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Sources.Services.SaveLoadProgress
+namespace Assets.Sources.Services.SaveLoadData
 {
     public static class DataExtansions
     {
