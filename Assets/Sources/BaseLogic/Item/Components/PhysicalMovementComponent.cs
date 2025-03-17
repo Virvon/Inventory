@@ -1,27 +1,30 @@
 ﻿using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Item
+namespace Assets.Sources.BaseLogic.Item.Components
 {
     public class PhysicalMovementComponent
     {
         private readonly Rigidbody _rigidbody;
-        private readonly ParentChangerComponent _parentChangerComponent;
 
-        public PhysicalMovementComponent(Rigidbody rigidbody, ParentChangerComponent parentChangerComponent)
+        public PhysicalMovementComponent(Rigidbody rigidbody)
         {
             _rigidbody = rigidbody;
-            _parentChangerComponent = parentChangerComponent;
+
+            Fixed = false;
         }
 
-        public bool CanMoved => _parentChangerComponent.Fixed == false;
+        public bool Fixed { get; private set; }
 
         public void SetGravity(bool isActive) =>
             _rigidbody.useGravity = isActive;
 
         public void Move(Vector3 position)
         {
-            if(CanMoved)
+            if (Fixed == false)
                 _rigidbody.Move(position, _rigidbody.rotation);
         }
+
+        public void SetFix(bool isFixed) =>
+            Fixed = isFixed;
     }
 }

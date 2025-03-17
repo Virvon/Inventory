@@ -32,7 +32,7 @@ namespace Assets.Sources.BaseLogic.Bag
         private void Save()
         {
             _memento = _originator.Save();
-            _saveLoadService.Save(_memento.GetBagData());
+            _saveLoadService.Save(_memento.GetData<BagData>());
         }
     }
 }

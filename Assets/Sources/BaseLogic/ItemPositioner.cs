@@ -1,5 +1,6 @@
 ﻿using Assets.Sources.BaseLogic.Bag.View;
 using Assets.Sources.BaseLogic.Item;
+using Assets.Sources.BaseLogic.Item.Components;
 using Assets.Sources.InputService;
 using System;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Assets.Sources.BaseLogic
     public class ItemPositioner : IDisposable
     {
         private const float RaycastDistance = 100;
+        private const int ItemDistance = 3;
 
         private readonly Camera _camera;
         private readonly IInputService _inputService;
@@ -36,7 +38,7 @@ namespace Assets.Sources.BaseLogic
         {
             if (Physics.Raycast(GetRay(position), out RaycastHit hitInfo, RaycastDistance)
                 && hitInfo.transform.TryGetComponent(out ItemObject itemObject)
-                && itemObject.Get<PhysicalMovementComponent>().CanMoved)
+                && itemObject.Get<PhysicalMovementComponent>().Fixed == false)
             {
                 _movementItem = itemObject;
                 _movementItem.Get<PhysicalMovementComponent>().SetGravity(false);
@@ -48,7 +50,7 @@ namespace Assets.Sources.BaseLogic
             if (_movementItem == null)
                 return;
 
-            Vector3 worldPosition = _camera.ScreenToWorldPoint(new Vector3(position.x, position.y, 3));
+            Vector3 worldPosition = _camera.ScreenToWorldPoint(new Vector3(position.x, position.y, ItemDistance));
 
             _movementItem.Get<PhysicalMovementComponent>().Move(worldPosition);
         }

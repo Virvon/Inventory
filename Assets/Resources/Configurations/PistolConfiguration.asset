@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefdae89271b5ec41b454e0d610248b5, type: 3}
   m_Name: PistolConfiguration
   m_EditorClassIdentifier: 
-  _identifier: 675a99ba-58f2-4c4a-86a4-a661dcc9dad9
-  Weight: 0
+  Weight: 1
   Name: Pistol
   Type: 1
   Prefab: {fileID: 4802508820661635736, guid: 65a61292561516444a97e3239eead02d, type: 3}
   StartPosition: {x: 0, y: 0, z: -1}
+  _identifier: 675a99ba-58f2-4c4a-86a4-a661dcc9dad9

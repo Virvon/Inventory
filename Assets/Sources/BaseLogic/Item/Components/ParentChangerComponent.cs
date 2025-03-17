@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
-namespace Assets.Sources.BaseLogic.Item
+namespace Assets.Sources.BaseLogic.Item.Components
 {
     public class ParentChangerComponent
     {
@@ -16,20 +17,18 @@ namespace Assets.Sources.BaseLogic.Item
             _rigidbody = rigidbody;
             _itemObject = itemObject;
             _collider = collider;
-
-            Fixed = false;
         }
 
-        public bool Fixed { get; private set; }
+        public event Action<bool> FixChanged;
 
         public void Set(Transform parent, bool isInstantly = false)
         {
-            Fixed = true;
+            FixChanged?.Invoke(true);
             _rigidbody.isKinematic = true;
             _itemObject.transform.parent = parent;
             _collider.enabled = false;
 
-            if(isInstantly)
+            if (isInstantly)
             {
                 _itemObject.transform.position = parent.position;
                 _itemObject.transform.rotation = parent.rotation;
@@ -42,7 +41,7 @@ namespace Assets.Sources.BaseLogic.Item
 
         public void Reset()
         {
-            Fixed = false;
+            FixChanged?.Invoke(false);
             _rigidbody.isKinematic = false;
             _rigidbody.transform.parent = null;
             _collider.enabled = true;
@@ -56,7 +55,7 @@ namespace Assets.Sources.BaseLogic.Item
             Vector3 startPosition = _itemObject.transform.position;
             Quaternion startRotation = _itemObject.transform.rotation;
 
-            while(progress < 1)
+            while (progress < 1)
             {
                 progress = passedTime / MoveDuration;
                 passedTime += Time.deltaTime;

@@ -14,5 +14,9 @@ namespace Assets.Sources.Services.SaveLoadData
 
         public BagData GetBagData() =>
             this;
+
+        public TData GetData<TData>()
+            where TData : class =>
+            this as TData;
     }
 }

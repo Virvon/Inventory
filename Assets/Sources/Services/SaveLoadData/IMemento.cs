@@ -2,6 +2,7 @@
 {
     public interface IMemento
     {
-        BagData GetBagData();
+        TData GetData<TData>()
+            where TData : class;
     }
 }

@@ -37,9 +37,9 @@ namespace Assets.Sources.BaseLogic.Bag
         private void OnItemAdded(ItemObject item) =>
             _coroutineRunner.StartCoroutine(Send(item.Identifire, "Added"));
 
-        public IEnumerator Send(Guid itemIdentifier, string eventType)
+        public IEnumerator Send(string itemIdentifier, string eventType)
         {
-            string jsonData = new EventData(itemIdentifier.ToString(), eventType).ToJson();
+            string jsonData = new EventData(itemIdentifier, eventType).ToJson();
 
             WWWForm formData = new();
             UnityWebRequest request = UnityWebRequest.Post(ServerURL, formData);
@@ -54,6 +54,8 @@ namespace Assets.Sources.BaseLogic.Bag
                 throw new Exception(request.error);
 
             Debug.Log("Server response: " + request.downloadHandler.text);
+
+            request.Dispose();
         }
 
         [Serializable]

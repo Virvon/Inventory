@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Sources.BaseLogic.Item
 {
@@ -14,16 +13,16 @@ namespace Assets.Sources.BaseLogic.Item
 
         [SerializeField] private string _identifier;
 
-        public Guid Identifier
+        public string Identifier
         {
             get
             {
                 if (string.IsNullOrEmpty(_identifier))
                 {
-                    _identifier = Guid.NewGuid().ToString();
+                    _identifier = Animator.StringToHash(Name).ToString();
                 }
 
-                return new Guid(_identifier);
+                return _identifier;
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Sources.BaseLogic.Item.Components;
+using Assets.Sources.Services.DisposeService;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,16 +12,19 @@ namespace Assets.Sources.BaseLogic.Item
     {
         private const string ConfigurationsPath = "Configurations";
 
-        private readonly Dictionary<Guid, ItemConfiguration> _itemConfigurations;
+        private readonly Dictionary<string, ItemConfiguration> _itemConfigurations;
+        private readonly DisposeService _disposeService;
 
-        public ItemBuilder()
+        public ItemBuilder(DisposeService disposeService)
         {
+            _disposeService = disposeService;
+
             _itemConfigurations = Resources.LoadAll<ItemConfiguration>(ConfigurationsPath).ToDictionary(value => value.Identifier, value => value);
         }
 
-        public IReadOnlyList<Guid> AllIdentifiers => _itemConfigurations.Keys.ToList();
+        public IReadOnlyList<string> AllIdentifiers => _itemConfigurations.Keys.ToList();
 
-        public ItemObject Create(Guid identifier)
+        public ItemObject Create(string identifier)
         {
             if (_itemConfigurations.TryGetValue(identifier, out ItemConfiguration configuration) == false)
                 throw new Exception();
@@ -30,8 +35,14 @@ namespace Assets.Sources.BaseLogic.Item
             Rigidbody rigidbody = item.GetComponent<Rigidbody>();
             ParentChangerComponent parentChanger = new(rigidbody, item, item.GetComponent<Collider>());
 
+            PhysicalMovementComponent physicalMovementComponent = new(rigidbody);
+            MovementControllerComponent movementController = new(parentChanger, physicalMovementComponent);
+
             item.Add(parentChanger);
-            item.Add(new PhysicalMovementComponent(rigidbody, parentChanger));
+            item.Add(physicalMovementComponent);
+            item.Add(movementController);
+
+            _disposeService.Register(movementController);
 
             return item;
         }

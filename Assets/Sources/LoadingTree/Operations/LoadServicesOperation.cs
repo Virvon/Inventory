@@ -9,9 +9,17 @@ namespace Assets.Sources.LoadingTree.Operations
     {
         public void Run(SharedBundle bundle)
         {
-            ServiceLocator.ServiceLocator.Resgister<IInputService>(new InputService.InputService());
-            ServiceLocator.ServiceLocator.Resgister<ISaveLoadService>(new SaveLoadService());
-            ServiceLocator.ServiceLocator.Resgister(new DisposeService());
+            IInputService inputService = new InputService.InputService();
+            ISaveLoadService saveLoadService = new SaveLoadService();
+            DisposeService disposeService = new();
+
+            ServiceLocator.ServiceLocator.Resgister(inputService);
+            ServiceLocator.ServiceLocator.Resgister(saveLoadService);
+            ServiceLocator.ServiceLocator.Resgister(disposeService);
+
+            bundle.Add(SharedBundleKeys.InputService, inputService);
+            bundle.Add(SharedBundleKeys.SaveLoadService, saveLoadService);
+            bundle.Add(SharedBundleKeys.DisposeService, disposeService);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Assets.Sources.BaseLogic.Item
 
         public ItemType Type => _configuration.Type;
         public string Name => _configuration.Name;
-        public Guid Identifire => _configuration.Identifier;
+        public string Identifire => _configuration.Identifier;
 
         private void Awake() =>
             Add(GetComponent<Rigidbody>());

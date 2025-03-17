@@ -1,8 +1,5 @@
-﻿using Assets.Sources.BaseLogic.Item;
-using Assets.Sources.LoadingTree.SharedDataBundle;
+﻿using Assets.Sources.LoadingTree.SharedDataBundle;
 using Assets.Sources.Services.SaveLoadData;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Assets.Sources.LoadingTree.Operations
@@ -11,9 +8,9 @@ namespace Assets.Sources.LoadingTree.Operations
     {
         public void Run(SharedBundle bundle)
         {
-            BagData bagData = ServiceLocator.ServiceLocator.Get<ISaveLoadService>().TryLoad<BagData>();
+            BagData bagData = bundle.Get<ISaveLoadService>(SharedBundleKeys.SaveLoadService).TryLoad<BagData>();
 
-            Guid[] itemIdentifiers = bagData == null ? new Guid[0] : bagData.ItemIdentifiers.Select(value => new Guid(value)).ToArray();
+            string[] itemIdentifiers = bagData == null ? new string[0] : bagData.ItemIdentifiers.Select(value => new string(value)).ToArray();
 
             bundle.Add(SharedBundleKeys.StartInventoryItems, itemIdentifiers);
         }

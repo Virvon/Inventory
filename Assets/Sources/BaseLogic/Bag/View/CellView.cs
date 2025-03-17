@@ -1,4 +1,5 @@
 ﻿using Assets.Sources.BaseLogic.Item;
+using Assets.Sources.BaseLogic.Item.Components;
 using UnityEngine;
 
 namespace Assets.Sources.BaseLogic.Bag.View

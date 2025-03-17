@@ -27,12 +27,12 @@ namespace Assets.Sources.BaseLogic.Bag
         private readonly IInputService _inputService;
         private readonly ISaveLoadService _saveLoadService;
 
-        public BagBuilder(SharedBundle sharedBundle, DisposeService disposeService, IInputService inputService, ISaveLoadService saveLoadService)
+        public BagBuilder(SharedBundle sharedBundle)
         {
             _sharedBundle = sharedBundle;
-            _disposeService = disposeService;
-            _inputService = inputService;
-            _saveLoadService = saveLoadService;
+            _disposeService = sharedBundle.Get<DisposeService>(SharedBundleKeys.DisposeService);
+            _inputService = sharedBundle.Get<IInputService>(SharedBundleKeys.InputService);
+            _saveLoadService = sharedBundle.Get<ISaveLoadService>(SharedBundleKeys.SaveLoadService);
         }
 
         public void Create(List<ItemObject> items)
