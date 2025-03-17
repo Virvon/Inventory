@@ -32,7 +32,11 @@ namespace Assets.Sources.BaseLogic.Bag
 
         public void Dispose()
         {
-
+            _clickResierver.Clicked -= OnBagClicked;
+            _inputService.ClickEnded -= OnClickEnded;
+            _model.ItemAdded.RemoveListener(OnItemAdded);
+            _view.ItemRemoved -= OnViewTryItemRemoved;
+            _model.ItemRemoved.RemoveListener(OnItemRemoved);
         }
 
         private void OnItemRemoved(ItemObject item)

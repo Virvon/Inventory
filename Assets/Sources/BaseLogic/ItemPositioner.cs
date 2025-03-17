@@ -6,21 +6,19 @@ using UnityEngine;
 
 namespace Assets.Sources.BaseLogic
 {
-    public class Positioner : IDisposable
+    public class ItemPositioner : IDisposable
     {
         private const float RaycastDistance = 100;
 
         private readonly Camera _camera;
         private readonly IInputService _inputService;
-        private readonly BagView _bagView;
 
         private ItemObject _movementItem;
 
-        public Positioner(Camera camera, IInputService inputService, BagView bagView)
+        public ItemPositioner(Camera camera, IInputService inputService)
         {
             _camera = camera;
             _inputService = inputService;
-            _bagView = bagView;
 
             _inputService.Clicked += OnClicked;
             _inputService.Dragged += OnDragged;
@@ -30,6 +28,8 @@ namespace Assets.Sources.BaseLogic
         public void Dispose()
         {
             _inputService.Clicked -= OnClicked;
+            _inputService.Dragged -= OnDragged;
+            _inputService.ClickEnded -= OnClickEnded;
         }
 
         private void OnClicked(Vector2 position)

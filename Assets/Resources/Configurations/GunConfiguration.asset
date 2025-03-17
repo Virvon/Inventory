@@ -17,4 +17,4 @@ MonoBehaviour:
   Name: Gun
   Type: 0
   Prefab: {fileID: -2760759342776581563, guid: a40401e79d117f448999efd6964b95eb, type: 3}
-  StartPosition: {x: 1, y: 0, z: 0}
+  StartPosition: {x: -1, y: 0, z: -1}

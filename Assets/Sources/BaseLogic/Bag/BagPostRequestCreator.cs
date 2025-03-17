@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 namespace Assets.Sources.BaseLogic.Bag
 {
-    public class BagPostRequestCreator
+    public class BagPostRequestCreator : IDisposable
     {
         private const string ServerURL = "https://wadahub.manerai.com/api/inventory/status";
         private const string AuthorizationToken = "kPERnYcWAY46xaSy8CEzanosAgsWM84Nx7SKM4QBSqPq6c7StWfGxzhxPfDh8MaP";
@@ -19,10 +19,16 @@ namespace Assets.Sources.BaseLogic.Bag
         public BagPostRequestCreator(Model.Bag bag, ICoroutineRunner coroutineRunner)
         {
             _bag = bag;
+            _coroutineRunner = coroutineRunner;
 
             _bag.ItemAdded.AddListener(OnItemAdded);
             _bag.ItemRemoved.AddListener(OnItemRemoved);
-            _coroutineRunner = coroutineRunner;
+        }
+
+        public void Dispose()
+        {
+            _bag.ItemAdded.RemoveListener(OnItemAdded);
+            _bag.ItemRemoved.RemoveListener(OnItemRemoved);
         }
 
         private void OnItemRemoved(ItemObject item) =>

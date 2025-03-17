@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _identifier: 02d6185a-c950-4d6a-9ffe-a9059b7a4403
   Weight: 0
-  Name: Tool
+  Name: Axe
   Type: 2
   Prefab: {fileID: -7754446458743687016, guid: 6a2fa6da01f36d74ba02409497526f74, type: 3}
-  StartPosition: {x: 3, y: 0, z: 0}
+  StartPosition: {x: 1, y: 0, z: -1}

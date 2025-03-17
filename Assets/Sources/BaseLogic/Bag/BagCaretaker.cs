@@ -26,10 +26,8 @@ namespace Assets.Sources.BaseLogic.Bag
             _originator.ItemRemoved.RemoveListener(OnBagChanged);
         }
 
-        private void OnBagChanged(ItemObject item)
-        {
+        private void OnBagChanged(ItemObject item) =>
             Save();
-        }
 
         private void Save()
         {

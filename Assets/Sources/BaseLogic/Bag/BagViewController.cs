@@ -1,8 +1,6 @@
-﻿using Assets.Sources.BaseLogic.Bag.Model;
-using Assets.Sources.BaseLogic.Bag.View;
+﻿using Assets.Sources.BaseLogic.Bag.View;
 using Assets.Sources.BaseLogic.Item;
 using System;
-using UnityEngine;
 
 namespace Assets.Sources.BaseLogic.Bag
 {

@@ -2,8 +2,8 @@
 using Assets.Sources.BaseLogic.Bag.View;
 using Assets.Sources.BaseLogic.Item;
 using Assets.Sources.InputService;
-using Assets.Sources.LoadingTree.ServiceLocator;
 using Assets.Sources.LoadingTree.SharedDataBundle;
+using Assets.Sources.Services.DisposeService;
 using Assets.Sources.Services.SaveLoadData;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,9 +23,17 @@ namespace Assets.Sources.BaseLogic.Bag
         };
 
         private readonly SharedBundle _sharedBundle;
+        private readonly DisposeService _disposeService;
+        private readonly IInputService _inputService;
+        private readonly ISaveLoadService _saveLoadService;
 
-        public BagBuilder(SharedBundle sharedBundle) =>
+        public BagBuilder(SharedBundle sharedBundle, DisposeService disposeService, IInputService inputService, ISaveLoadService saveLoadService)
+        {
             _sharedBundle = sharedBundle;
+            _disposeService = disposeService;
+            _inputService = inputService;
+            _saveLoadService = saveLoadService;
+        }
 
         public void Create(List<ItemObject> items)
         {
@@ -35,19 +43,20 @@ namespace Assets.Sources.BaseLogic.Bag
             BagObject bagObject = Object.Instantiate(bagPrefab);
             UiBagView uiBagView = Object.Instantiate(uiBagViewPrefab);
 
-            uiBagView.Initialize(ServiceLocator.Get<IInputService>());
+            uiBagView.Initialize(_inputService);
 
             Model.Bag bagModel = new(_cellsData, items);
 
-            BagViewController inventoryController = new(bagModel, bagObject.Get<BagView>());
-            UiBagPresenter uiBagPresenter = new(bagModel, uiBagView, ServiceLocator.Get<IInputService>(), bagObject.Get<ClickResieverComponent>());
+            BagViewController bagViewController = new(bagModel, bagObject.Get<BagView>());
+            UiBagPresenter uiBagPresenter = new(bagModel, uiBagView, _inputService, bagObject.Get<ClickResieverComponent>());
 
-            bagObject.Get<ClickResieverComponent>().Initialize(ServiceLocator.Get<IInputService>(), _sharedBundle.Get<Camera>(SharedBundleKeys.Camera));
+            bagObject.Get<ClickResieverComponent>().Initialize(_inputService, _sharedBundle.Get<Camera>(SharedBundleKeys.Camera));
 
-            BagCaretaker caretaker = new(bagModel, ServiceLocator.Get<ISaveLoadService>());
+            BagCaretaker bagCaretaker = new(bagModel, _saveLoadService);
 
-            _sharedBundle.Add(SharedBundleKeys.BagView, bagObject.Get<BagView>());
             _sharedBundle.Add(SharedBundleKeys.BagModel, bagModel);
+
+            _disposeService.Register(bagViewController, uiBagPresenter, bagCaretaker);
         }
     }
 }

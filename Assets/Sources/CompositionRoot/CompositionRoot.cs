@@ -9,6 +9,7 @@ using Assets.Sources.LoadingTree.Piplines;
 using Assets.Sources.LoadingTree.ServiceLocator;
 using Assets.Sources.LoadingTree.SharedDataBundle;
 using Assets.Sources.Services.CoroutineRunner;
+using Assets.Sources.Services.DisposeService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,21 @@ namespace Assets.Sources.CompositionRoot
 
         private void Awake()
         {
+            LaunchGame();
+            CreateScene();
+        }
+
+        private void Update()
+        {
+            if(_inputService != null)
+                _inputService.Update();
+        }
+
+        private void OnDestroy() =>
+            ServiceLocator.Get<DisposeService>().Dispose();
+
+        private void LaunchGame()
+        {
             BagLoadingPipline gameLoadingPipline = new BagLoadingPipline();
 
             _sharedBundle = new();
@@ -37,22 +53,19 @@ namespace Assets.Sources.CompositionRoot
             GameLauncher gameLauncher = new(gameLoadingPipline.GetOperations());
 
             gameLauncher.Launch(_sharedBundle);
+        }
 
+        private void CreateScene()
+        {
             CreateItems();
             CreateBag();
-           
 
-            Positioner positioner = new(_sharedBundle.Get<Camera>(SharedBundleKeys.Camera), ServiceLocator.Get<IInputService>(), _sharedBundle.Get<BagView>(SharedBundleKeys.BagView));
+            ItemPositioner positioner = new(_sharedBundle.Get<Camera>(SharedBundleKeys.Camera), ServiceLocator.Get<IInputService>());
             BagPostRequestCreator bagPostRequestCreator = new(_sharedBundle.Get<Bag>(SharedBundleKeys.BagModel), _sharedBundle.Get<ICoroutineRunner>(SharedBundleKeys.CoroutineRunner));
 
             _inputService = ServiceLocator.Get<IInputService>();
 
-            //SceneManager.activeSceneChanged += OnActiveSceneChanged;
-        }
-
-        private void Update()
-        {
-            _inputService.Update();
+            ServiceLocator.Get<DisposeService>().Register(positioner, bagPostRequestCreator);
         }
 
         private void CreateItems()
