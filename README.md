@@ -1,5 +1,5 @@
 # Inventory system
-Это простая реализация системы инвентаря с использованием <b>MVС Passive view</b>, <b>MVP</b> и паттерна <b>Memento</b> для сохранения.
+Это простая реализация системы инвентаря с использованием <b>MVP Passive view</b>, <b>MVC</b> и паттерна <b>Memento</b> для сохранения.
 
 [Билд на itch.io (PC)](https://virvon.itch.io/inventory)
 
